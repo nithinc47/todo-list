@@ -8,11 +8,20 @@ builder.Services.AddCors(options =>
     .AllowAnyMethod());
 });
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 builder.Services.AddSingleton<Todos>();
 
 var app = builder.Build();
 
 app.UseCors("TodoAppCorsPolicy");
+
+app.UseSwagger();
+app.UseSwaggerUI(options => {
+  options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+  options.RoutePrefix = string.Empty;
+});
 
 //app.MapGet("/todos", () => Results.Json(todos));
 app.MapGet("/todos", (Todos todos) => todos.GetAll());
