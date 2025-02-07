@@ -6,6 +6,8 @@ import Aura from '@primeng/themes/aura'
 
 import { routes } from './app.routes'
 
+import "primeicons/primeicons.css";
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
