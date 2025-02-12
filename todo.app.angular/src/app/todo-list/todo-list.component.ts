@@ -22,8 +22,8 @@ import { CheckboxModule } from "primeng/checkbox";
   template: `
 <div class="my-block">
   <p-input-group>
-    <input pInputText placeholder="New item" />
-    <p-button label="Add"/>
+    <input pInputText [(ngModel)]="newTodo" placeholder="New item" />
+    <p-button (onClick)="addItem()" label="Add"/>
   </p-input-group>
   <div class="mt-4">
     <p-table [value]="todos">
@@ -38,7 +38,7 @@ import { CheckboxModule } from "primeng/checkbox";
         <tr>
           <td [class.text-completed]="item.completed">{{ item.text }}</td>
           <td class="table-text-center"><p-checkbox [(ngModel)]="item.completed" [binary]="true" /></td>
-          <td><p-button icon="pi pi-trash" severity="danger" /></td>
+          <td><p-button (onClick)="deleteItem(item.id)" icon="pi pi-trash" severity="danger" /></td>
         </tr>
       </ng-template>
     </p-table>
@@ -59,8 +59,19 @@ import { CheckboxModule } from "primeng/checkbox";
 export class TodoListComponent {
   private todoService = inject(TodoService);
   todos: Todo[];
+  newTodo: string;
 
   constructor(){
     this.todos = this.todoService.getTodos();
+    this.newTodo = '';
+  }
+
+  addItem(){
+    this.todos.push(this.todoService.createTodo(this.newTodo));
+    this.newTodo = '';
+  }
+
+  deleteItem(id: number) {
+    this.todos = this.todos.filter(x => x.id !== id);
   }
 }
